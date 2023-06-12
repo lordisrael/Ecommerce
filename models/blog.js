@@ -38,10 +38,7 @@ const blogSchema = new mongoose.Schema({
             ref: 'User',
         }
     ],
-    image: {
-        type: String,
-        default: "https://www.shutterstock.com/image-photo/bloggingblog-concepts-ideas-white-worktable-1029506242"
-    },
+    images: [],
     author: {
         type: String,
         default: "Admin"

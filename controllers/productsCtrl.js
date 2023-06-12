@@ -6,6 +6,8 @@ const slugify = require('slugify')
 const cloudinaryUploadImg = require('../utils/cloudinary')
 const {BadRequestError, NotFoundError} = require('../errors')
 const user = require('../models/user')
+const fs = require('fs')
+const path = require('path')
 
 const createProduct = asyncHandler(async(req, res) => {
     if(req.body.title){
@@ -179,16 +181,18 @@ const rating = asyncHandler(async (req, res) => {
 
 const uploadImages = asyncHandler(async(req, res) => {
     const {id:productId} = req.params
-    console.log(req.files)
+    //console.log(req.files)
     const uploader = (path) => cloudinaryUploadImg(path, "images")
     const urls = []
     const files = req.files
     for (const file of files) {
         const {path} = file
         const newpath = await uploader(path)
-        console.log(newpath)
+        //console.log(newpath)
         urls.push(newpath)
-    }
+        fs.unlinkSync(path)
+    } 
+    
     const findproduct = await Product.findByIdAndUpdate({_id: productId},  {
         images: urls.map((file) => {
             return file
@@ -196,6 +200,7 @@ const uploadImages = asyncHandler(async(req, res) => {
     }, {
         new: true,
     })
+   
     if(!findproduct){
         throw new NotFoundError(`No product with id: ${productId} found` )
     }

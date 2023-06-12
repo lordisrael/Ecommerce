@@ -3,6 +3,8 @@ const Blog = require('../models/blog')
 const { NotFoundError } = require('../errors')
 const asyncHandler = require('express-async-handler')
 const { StatusCodes } = require('http-status-codes')
+const cloudinaryUploadImg = require('../utils/cloudinary')
+const fs = require('fs')
 
 const createBlog = asyncHandler(async(req, res) => {
     const blog = await Blog.create(req.body)
@@ -122,6 +124,35 @@ const dislikeBlog = asyncHandler(async(req, res) => {
         return res.status(StatusCodes.OK).json(blog)
     }
 })
+
+const uploadImages = asyncHandler(async(req, res) => {
+    const {id:blogId} = req.params
+    //console.log(req.files)
+    const uploader = (path) => cloudinaryUploadImg(path, "images")
+    const urls = []
+    const files = req.files
+    for (const file of files) {
+        const {path} = file
+        const newpath = await uploader(path)
+        //console.log(newpath)
+        urls.push(newpath)
+        fs.unlinkSync(path)
+    }
+    const findblog = await Blog.findByIdAndUpdate({_id: blogId},  {
+        images: urls.map((file) => {
+            return file
+        })
+    }, {
+        new: true,
+    })
+    if(!findblog){
+        throw new NotFoundError(`No product with id: ${blogIdId} found` )
+    }
+    res.status(StatusCodes.OK).json({findblog, msg: 'Blog image updated'})
+})
+
+
+
 module.exports = {
     createBlog,
     updateBlog,
@@ -129,5 +160,6 @@ module.exports = {
     getAllBlog,
     deleteBlog,
     likeBlog,
-    dislikeBlog
+    dislikeBlog,
+    uploadImages
 }
