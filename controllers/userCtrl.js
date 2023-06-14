@@ -56,6 +56,36 @@ const login = asyncHandler(async(req, res) => {
     }
 })
 
+const adminLogin = asyncHandler(async(req, res) => {
+    const {email, password} = req.body
+    const user = await User.findOne({email})
+    if(user.role != 'admin'){ 
+        throw new UnauthenticatedError("Not Authorised")
+    }
+    if(user && (await user.comparePassword(password))){
+        const refreshToken = await createRefreshJWT(user._id)
+        await User.findByIdAndUpdate(user._id,
+            {
+                refreshToken: refreshToken
+            }, {new: true}
+            )
+            res.cookie("refeshtoken", refreshToken, {
+                httpOnly: true,
+                maxAge: 72 * 60 * 60 * 1000
+            })
+            res.status(StatusCodes.OK).json({
+                _id:user._id,
+                firstname: user.firstname,
+                secondname: user.secondname,
+                email: user.email,
+                mobile: user.mobile,
+                token: createJWT(user._id, user.firstname)
+            })
+        } else {
+            throw new UnauthenticatedError('Invalid credentials')
+    }
+})
+
 const handleRefreshToken = asyncHandler(async(req, res) => {
     const cookie = req.cookies
     if(!cookie.refreshToken) throw new NotFoundError('No refresh token identified')
@@ -93,6 +123,18 @@ const logout = asyncHandler(async(req, res) => {
     })
     return res.sendStatus(204)
 
+})
+
+
+const saveAddress = asyncHandler(async(req, res) => {
+    const { _id } = req.user
+    const user = await User.findByIdAndUpdate(_id,
+        {
+            address: req.body.address,
+        },
+        {new: true,
+        })
+    res.status(StatusCodes.OK).json({user, msg: {msg: 'User updated'}})
 })
 
 const updatePassword = asyncHandler(async(req, res) => {
@@ -157,7 +199,7 @@ const resetPassword = asyncHandler(async(req, res) => {
 })
 
 const getAllUsers = asyncHandler(async (req, res) => {
-    const getUsers = await User.find({role: 'user'})
+    const getUsers = await User.find({/*role: 'user'*/})
     res.status(StatusCodes.OK).json({getUsers})
 })
 
@@ -198,6 +240,13 @@ const deleteUser = asyncHandler(async(req, res) => {
     res.status(StatusCodes.OK).json({deleteUser, msg: {msg: 'User deleted'}})
     
 })
+
+const getWishList = asyncHandler(async(req, res ) => {
+    const {_id} = req.user
+    const user = await User.findById(_id).populate('wishlist')
+    res.status(StatusCodes.OK).json(user)
+})
+
 module.exports = {
     createUser,
     login,
@@ -209,5 +258,8 @@ module.exports = {
     handleRefreshToken,
     logout,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    adminLogin,
+    getWishList,
+    saveAddress
 }
