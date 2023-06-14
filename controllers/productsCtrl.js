@@ -1,5 +1,7 @@
 const Product = require('../models/products')
 const User = require('../models/user')
+const Cart = require('../models/cart')
+const Coupon = require('../models/coupon')
 const { StatusCodes } = require('http-status-codes')
 const asyncHandler = require('express-async-handler')
 const slugify = require('slugify')
@@ -126,7 +128,7 @@ const addToWishlist = asyncHandler(async(req, res) => {
         },
         {
             new: true
-        })
+        }).select('-refreshToken')
         return res.status(StatusCodes.OK).json(user)
     } else {
         let user =await  User.findByIdAndUpdate(_id, {
@@ -134,7 +136,7 @@ const addToWishlist = asyncHandler(async(req, res) => {
         },
         {
             new: true
-        })
+        }).select('-refreshToken')
         return res.status(StatusCodes.OK).json(user)
 
     }
@@ -190,7 +192,7 @@ const uploadImages = asyncHandler(async(req, res) => {
         const newpath = await uploader(path)
         //console.log(newpath)
         urls.push(newpath)
-        fs.unlinkSync(path)
+        //fs.unlinkSync(path)
     } 
     
     const findproduct = await Product.findByIdAndUpdate({_id: productId},  {
@@ -207,6 +209,73 @@ const uploadImages = asyncHandler(async(req, res) => {
     res.status(StatusCodes.OK).json({findproduct, msg: 'Product image updated'})
 })
 
+const userCart = asyncHandler(async(req, res) => {
+    const {cart} = req.body
+    const {_id} = req.user
+    let products = []
+    const user = await User.findById(_id)
+    const alreadyExistCart = await Cart.findOne({orderby: user._id})
+    if(alreadyExistCart) {
+        alreadyExistCart.remove()
+    }
+    for(let i = 0; i < cart.length; i++) {
+        let object = {}
+        object.product = cart[i]._id
+        object.count = cart[i].count
+        object.color = cart[i].color
+        let getPrice = await Product.findById(cart[i]._id).select('price').exec()
+        object.price = getPrice.price
+        products.push(object )
+
+    }
+    let cartTotal = 0
+    for(let i = 0; i < products.length; i++){
+        cartTotal = cartTotal + products[i].price * products[i].count
+    }
+    let newCart = await new Cart({
+        products,
+        cartTotal,
+        orderby: user._id
+    }).save()
+    res.status(StatusCodes.OK).json(newCart)
+})
+
+const getUserCart = asyncHandler(async(req, res) => {
+    const {_id} = req.user
+    const cart = await Cart.findOne({orderby:_id}).populate("products.product", "_id title price totalAfterDiscount")
+    res.status(StatusCodes.OK).json(cart)
+})
+
+const emptyCart = asyncHandler(async(req, res) => {
+    const { _id } = req.user
+    const user = await User.findOne({ _id })
+    const cart = await Cart.findOneAndRemove({orderby: user._id})
+    res.status(StatusCodes.OK).json(cart)
+})
+
+const applyCoupon = asyncHandler(async(req, res) => {
+    const {coupon} = req.body
+    const {_id} = req.user
+    const validCoupon = await Coupon.findOne({name: coupon})
+    if(validCoupon === null) {
+        throw new NotFoundError('Coupon not Found')
+    }
+    const user = await User.findOne({_id})
+    let {products, cartTotal} = await Cart.findOne({orderby: user._id,}).populate("products.product")
+    let totalAfterDiscount = (cartTotal - (cartTotal * validCoupon.discount)/ 100).toFixed(2)
+    await Cart.findOneAndUpdate(
+        {orderby: user._id},
+        {totalAfterDiscount},
+        {new: true}
+    )
+    res.status(StatusCodes.OK).json(totalAfterDiscount)
+
+})
+
+const createOrder = asyncHandler(async(req, res) => {
+    
+})
+
 module.exports = {
     createProduct,
     getAProduct,
@@ -215,5 +284,9 @@ module.exports = {
     deleteProduct,
     addToWishlist,
     rating,
-    uploadImages
+    uploadImages,
+    userCart,
+    getUserCart,
+    emptyCart,
+    applyCoupon,
 }
