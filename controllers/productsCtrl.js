@@ -2,6 +2,8 @@ const Product = require('../models/products')
 const User = require('../models/user')
 const Cart = require('../models/cart')
 const Coupon = require('../models/coupon')
+const Order = require('../models/order')
+const uniqid = require('uniqid')
 const { StatusCodes } = require('http-status-codes')
 const asyncHandler = require('express-async-handler')
 const slugify = require('slugify')
@@ -261,7 +263,7 @@ const applyCoupon = asyncHandler(async(req, res) => {
         throw new NotFoundError('Coupon not Found')
     }
     const user = await User.findOne({_id})
-    let {products, cartTotal} = await Cart.findOne({orderby: user._id,}).populate("products.product")
+    let { cartTotal} = await Cart.findOne({orderby: user._id,}).populate("products.product")
     let totalAfterDiscount = (cartTotal - (cartTotal * validCoupon.discount)/ 100).toFixed(2)
     await Cart.findOneAndUpdate(
         {orderby: user._id},
@@ -273,7 +275,65 @@ const applyCoupon = asyncHandler(async(req, res) => {
 })
 
 const createOrder = asyncHandler(async(req, res) => {
-    
+    const { COD, couponApplied} = req.body
+    const {_id} = req.user
+    if(!COD) throw new NotFoundError("Create cash order failed")
+    const user = await User.findById({_id})
+    let userCart = await Cart.findOne({orderby: user._id})
+    let finalAmount = 0
+    if(couponApplied && userCart.totalAfterDiscount) {
+        finalAmount = userCart.totalAfterDiscount * 100
+    } else {
+        finalAmount = userCart.cartTotal * 100
+    }
+
+    let newOrder = await new Order({
+        products: userCart.products,
+        paymentIntent: {
+            id: uniqid(),
+            method: "COD",
+            amount: finalAmount,
+            status: "Cash on delivery",
+            created: Date.now(),
+            currency: 'usd'
+        },
+        orderby: user._id,
+        orderStatus: "Cash on delivery"
+    }).save()
+    let update = userCart.products.map((item) => {
+        return{
+            updateOne: {
+                filter: {_id: item.product._id},
+                update: {$inc: {quantity: -item.count, sold: +item.count}}
+            },
+        }
+    })
+    const updated = await Product.bulkWrite(update, {})
+    res.status(StatusCodes.OK).json("Success")
+})
+
+const getOrder = asyncHandler(async(req, res) => {
+    const { _id } = req.user
+    //console.log(req.user)
+    //const user = await User.findOne({ _id })
+    const userOrders = await Order.findOne({ orderby: _id}).populate("products.product").exec()
+    if(!userOrders) {
+        throw new NotFoundError(`No order found` )
+    }
+    res.status(StatusCodes.OK).json(userOrders)
+})
+
+const updateOrderStatus = asyncHandler(async(req, res) => {
+    const {status} = req.body
+    const {id: orderId} = req.params
+    const updateOrderStatus = await Order.findByIdAndUpdate({_id: orderId},
+        {
+            orderStatus: status,
+            paymentIntent: {
+                status: status
+            },   
+        }, { new: true})
+        res.status(StatusCodes.OK).json(updateOrderStatus)
 })
 
 module.exports = {
@@ -289,4 +349,7 @@ module.exports = {
     getUserCart,
     emptyCart,
     applyCoupon,
+    createOrder,
+    getOrder, 
+    updateOrderStatus
 }
