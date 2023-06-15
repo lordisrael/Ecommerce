@@ -199,7 +199,7 @@ const resetPassword = asyncHandler(async(req, res) => {
 })
 
 const getAllUsers = asyncHandler(async (req, res) => {
-    const getUsers = await User.find({/*role: 'user'*/})
+    const getUsers = await User.find({role: 'user'})
     res.status(StatusCodes.OK).json({getUsers})
 })
 
