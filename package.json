@@ -43,5 +43,9 @@
   },
   "engines": {
     "node": ">=14 <15"
+  },
+  "resolutions": {
+    "mongoose": "7.2.0"
   }
+  
 }

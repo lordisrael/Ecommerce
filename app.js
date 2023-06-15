@@ -63,7 +63,7 @@ const start =  async () => {
         })
 
     } catch (error) {
-        console.log(err.stack)
+        console.log(error)
     }
 }
 start()
