@@ -50,6 +50,10 @@ app.use('/api/v1/brand', brandRoute)
 app.use('/api/v1/category', prodcategoryRoute)
 app.use('/api/v1/coupon', couponRoute)
 
+app.get('/', (req, res) => {
+    res.send('Ecommerce API')
+})
+
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
 
