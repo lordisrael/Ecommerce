@@ -6,7 +6,7 @@ This repository contains the documentation for an Ecommerce API. The API provide
 Base URL
 The base URL for all API endpoints is 
 
-https://ecommerce-ozzz.onrender.com/api/v1
+http://localhost:3000/api-docs/#/
 
 
 Authentication Endpoints
