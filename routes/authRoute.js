@@ -27,7 +27,7 @@ router.delete('/empty-cart', authMiddleware, emptyCart)
 router.get('/getUsers' ,authMiddleware, isAdmin,getAllUsers)
 router.get('/getAUser/:id',authMiddleware, isAdmin, getAUser)
 router.get('/wishlist',authMiddleware, getWishList)
-router.get('/deleteUser/:id', deleteUser)
+router.delete('/deleteUser/:id', deleteUser)
 
 router.put('/save-address', authMiddleware, saveAddress)
 router.put('/edit-user', authMiddleware, updateUser)

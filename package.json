@@ -36,6 +36,7 @@
     "uniqid": "^5.4.0",
     "xss": "^1.0.14",
     "xss-clean": "^0.1.4",
+    "yamljs": "^0.3.0",
     "yarn": "^1.22.19"
   },
   "devDependencies": {
@@ -47,5 +48,4 @@
   "resolutions": {
     "mongoose": "7.2.0"
   }
-  
 }
