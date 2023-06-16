@@ -4,7 +4,10 @@ Ecommerce API Documentation
 This repository contains the documentation for an Ecommerce API. The API provides various endpoints to interact with the Ecommerce system, including user authentication, product management, blog management, category management, brand management, and coupon management.
 
 Base URL
-The base URL for all API endpoints is https://api.example.com.
+The base URL for all API endpoints is 
+
+https://ecommerce-ozzz.onrender.com/api/v1
+
 
 Authentication Endpoints
 POST /auth/login
