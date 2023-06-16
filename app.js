@@ -9,6 +9,11 @@ const cors = require('cors')
 const xss = require('xss-clean')
 const rateLimiter = require('express-rate-limit')
 
+//swagger
+const swaggerUI = require('swagger-ui-express')
+const YAML = require('yamljs')
+const swaggerDocument = YAML.load('./swagger.yaml')
+
 const app = express()
 
 
@@ -42,6 +47,11 @@ app.use(express.json())
 app.use(cookieParser())
 //app.use(fileUpload({ useTempFiles: true }));
 
+app.get('/', (req, res) => {
+    res.send('<h1>E commerce</h1><a href="/api-docs">Documentation</a>')
+})
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/product', productRoute)
 app.use('/api/v1/blog', blogRoute)
@@ -50,9 +60,6 @@ app.use('/api/v1/brand', brandRoute)
 app.use('/api/v1/category', prodcategoryRoute)
 app.use('/api/v1/coupon', couponRoute)
 
-app.get('/', (req, res) => {
-    res.send('Ecommerce API')
-})
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)

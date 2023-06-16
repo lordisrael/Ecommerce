@@ -1,0 +1,1660 @@
+openapi: 3.0.0
+info:
+  title: Ecommerce API
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://ecommerce-ozzz.onrender.com/api/v1
+  variables: {}
+paths:
+  /auth/login:
+    post:
+      tags:
+      - auth
+      summary: Login
+      operationId: Login
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/LoginRequest'
+              - example:
+                  email: loveseun@gmail.com
+                  password: loveiman
+            example:
+              email: loveseun@gmail.com
+              password: loveiman
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/admin-login:
+    post:
+      tags:
+      - auth
+      summary: Admin-login
+      operationId: Admin-login
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Admin-login-Request'
+              - example:
+                  email: loveseun@gmail.com
+                  password: loveiman
+            example:
+              email: loveseun@gmail.com
+              password: loveiman
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/edit-user:
+    put:
+      tags:
+      - auth
+      summary: Updateuser
+      operationId: Updateuser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateuserRequest'
+              - example:
+                  firstname: Matthew
+                  lastname: Ikotun
+            example:
+              firstname: Matthew
+              lastname: Ikotun
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/update-password:
+    put:
+      tags:
+      - auth
+      summary: change password
+      operationId: changepassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/changepasswordrequest'
+              - example:
+                  password: lovIma
+            example:
+              password: lovIma
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/register:
+    post:
+      tags:
+      - auth
+      summary: Register
+      operationId: Register
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/RegisterRequest'
+              - example:
+                  firstname: Love
+                  lastname: Peace
+                  email: LovePeace@gmail.com
+                  password: loveiman
+                  mobile: '07088941743'
+                  role: admin
+            example:
+              firstname: Love
+              lastname: Peace
+              email: LovePeace@gmail.com
+              password: loveiman
+              mobile: '07088941743'
+              role: admin
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/logout:
+    get:
+      tags:
+      - auth
+      summary: logout
+      operationId: logout
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/refresh:
+    get:
+      tags:
+      - auth
+      summary: refresh
+      operationId: refresh
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/getAUser/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    get:
+      tags:
+      - auth
+      summary: getAUser
+      operationId: getAUser
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/deleteUser/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    delete:
+      tags:
+      - auth
+      summary: deleteUser
+      operationId: deleteUser
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/getUsers:
+    get:
+      tags:
+      - auth
+      summary: GetAllUsers
+      operationId: GetAllUsers
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/forgot:
+    post:
+      tags:
+      - auth
+      summary: Forget password
+      operationId: Forgetpassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ForgetpasswordRequest'
+              - example:
+                  email: joisrel@gmail.com
+            example:
+              email: joisrel@gmail.com
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/reset/{token}:
+    parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+        description: The reset Token
+    patch:
+      tags:
+      - auth
+      summary: Reset Password
+      operationId: ResetPassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ResetPasswordRequest'
+              - example:
+                  password: loveiman
+            example:
+              password: loveiman
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/wishlist:
+    get:
+      tags:
+      - auth
+      summary: Get wish List
+      operationId: GetwishList
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/save-address:
+    put:
+      tags:
+      - auth
+      summary: Save Address
+      operationId: SaveAddress
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/SaveAddressRequest'
+              - example:
+                  address: Odo Esira Ilesa, Osun state
+            example:
+              address: Odo Esira Ilesa, Osun state
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/cart:
+    post:
+      tags:
+      - auth
+      summary: Add cart
+      operationId: Addcart
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/AddcartRequest'
+              - example:
+                  cart:
+                  - _id: 6474c21b550076816cc3f27f
+                    count: 3
+                    color: black
+                  - _id: 6474c17d89c59ffc3035e3b1
+                    count: 2
+                    color: brown
+            example:
+              cart:
+              - _id: 6474c21b550076816cc3f27f
+                count: 3
+                color: black
+              - _id: 6474c17d89c59ffc3035e3b1
+                count: 2
+                color: brown
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - auth
+      summary: Get Cart
+      operationId: GetCart
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/empty-cart:
+    delete:
+      tags:
+      - auth
+      summary: Delete Cart
+      operationId: DeleteCart
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/apply-coupon:
+    post:
+      tags:
+      - auth
+      summary: Apply Coupon
+      operationId: ApplyCoupon
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ApplyCouponRequest'
+              - example:
+                  coupon: INSTA
+            example:
+              coupon: INSTA
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/cart/create-order:
+    post:
+      tags:
+      - auth
+      summary: Create order
+      operationId: Createorder
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateorderRequest'
+              - example:
+                  COD: true
+                  couponApplied: true
+            example:
+              COD: true
+              couponApplied: true
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/get-order:
+    get:
+      tags:
+      - auth
+      summary: Get order
+      operationId: Getorder
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/order/update-order/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The order ID
+    put:
+      tags:
+      - auth
+      summary: Update Order Status
+      operationId: UpdateOrderStatus
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateOrderStatusRequest'
+              - example:
+                  status: Processing
+            example:
+              status: Processing
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /product:
+    post:
+      tags:
+      - Product
+      summary: Register Product
+      operationId: RegisterProduct
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/RegisterProductRequest'
+              - example:
+                  title: MTN Broadband
+                  description: Nah mtn do am
+                  brand: Mtn
+                  category: Mifi
+                  price: 500
+                  quantity: 100
+                  colors: yellow
+            example:
+              title: MTN Broadband
+              description: Nah mtn do am
+              brand: Mtn
+              category: Mifi
+              price: 500
+              quantity: 100
+              colors: yellow
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Product
+      summary: Get All Product
+      operationId: GetAllProduct
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /product/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The product ID
+    get:
+      tags:
+      - Product
+      summary: Get single Product
+      operationId: GetsingleProduct
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    put:
+      tags:
+      - Product
+      summary: Update Product
+      operationId: UpdateProduct
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateProductRequest'
+              - example:
+                  title: Lenovo Om 2
+            example:
+              title: Lenovo Om 2
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Product
+      summary: Delete Product
+      operationId: DeleteProduct
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /product/wishlist:
+    put:
+      tags:
+      - Product
+      summary: Add to wishlist
+      operationId: Addtowishlist
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/AddtowishlistRequest'
+              - example:
+                  productId: 6474c17d89c59ffc3035e3b1
+            example:
+              productId: 6474c17d89c59ffc3035e3b1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /product/rating:
+    put:
+      tags:
+      - Product
+      summary: Ratings
+      operationId: Ratings
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/RatingsRequest'
+              - example:
+                  star: 2
+                  comment: Rubbish product
+                  productId: 6474c17d89c59ffc3035e3b1
+            example:
+              star: 2
+              comment: Rubbish product
+              productId: 6474c17d89c59ffc3035e3b1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /product/upload/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The product ID
+    put:
+      tags:
+      - Product
+      summary: Upload Picture
+      operationId: UploadPicture
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+              - images
+              type: object
+              properties:
+                images:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /blog:
+    post:
+      tags:
+      - Blog
+      summary: Create Blog
+      operationId: CreateBlog
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateBlogRequest'
+              - example:
+                  title: My AI 1
+                  category: AI
+                  description: My AI description 1
+            example:
+              title: My AI 1
+              category: AI
+              description: My AI description 1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Blog
+      summary: Get all Blogs
+      operationId: GetallBlogs
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /blog/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The blog ID
+    put:
+      tags:
+      - Blog
+      summary: Update Blog
+      operationId: UpdateBlog
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateBlogRequest'
+              - example:
+                  title: My Blog 4
+                  category: Travel
+                  description: My updated blog description 4
+            example:
+              title: My Blog 4
+              category: Travel
+              description: My updated blog description 4
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Blog
+      summary: get Single blog
+      operationId: getSingleblog
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+      - Blog
+      summary: Delete Blog
+      operationId: DeleteBlog
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /blog/likes:
+    put:
+      tags:
+      - Blog
+      summary: Like blog
+      operationId: Likeblog
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/LikeblogRequest'
+              - example:
+                  blogId: 6478632dce9df053906d10bd
+            example:
+              blogId: 6478632dce9df053906d10bd
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /blog/dislikes:
+    put:
+      tags:
+      - Blog
+      summary: dislike blog
+      operationId: dislikeblog
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/dislikeblogrequest'
+              - example:
+                  blogId: 6478632dce9df053906d10bd
+            example:
+              blogId: 6478632dce9df053906d10bd
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /blog/upload/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The blog ID
+    put:
+      tags:
+      - Blog
+      summary: Upload Images
+      operationId: UploadImages
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+              - images
+              type: object
+              properties:
+                images:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /category:
+    post:
+      tags:
+      - Productcategory
+      summary: Create category
+      operationId: Createcategory
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreatecategoryRequest'
+              - example:
+                  title: Car
+            example:
+              title: Car
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Productcategory
+      summary: Get All Category
+      operationId: GetAllCategory
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /category/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The string ID
+    put:
+      tags:
+      - Productcategory
+      summary: Update category
+      operationId: Updatecategory
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdatecategoryRequest'
+              - example:
+                  title: Tv
+            example:
+              title: Tv
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Productcategory
+      summary: Delete Category
+      operationId: DeleteCategory
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Productcategory
+      summary: Get A Category
+      operationId: GetACategory
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /blogcategory:
+    post:
+      tags:
+      - Blog Category
+      summary: Create category
+      operationId: PostCreatecategory
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreatecategoryRequest'
+              - example:
+                  title: Watch
+            example:
+              title: Watch
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Blog Category
+      summary: Get All Category
+      operationId: GetAllCategory1
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /blogcategory/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The blogcategory ID
+    put:
+      tags:
+      - Blog Category
+      summary: Update category
+      operationId: PutUpdatecategory
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdatecategoryRequest'
+              - example:
+                  title: Tv
+            example:
+              title: Tv
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Blog Category
+      summary: Get A Category
+      operationId: GetACategory1
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+      - Blog Category
+      summary: Delete Category
+      operationId: DeleteCategory1
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /brand:
+    post:
+      tags:
+      - Brand Category
+      summary: Create brand
+      operationId: Createbrand
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreatebrandRequest'
+              - example:
+                  title: Lenovo
+            example:
+              title: Lenovo
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Brand Category
+      summary: Get All brands
+      operationId: GetAllbrands
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /brand/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The brand ID
+    put:
+      tags:
+      - Brand Category
+      summary: Update brand
+      operationId: Updatebrand
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdatebrandRequest'
+              - example:
+                  title: Apple
+            example:
+              title: Apple
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Brand Category
+      summary: Get A brand
+      operationId: GetAbrand
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+      - Brand Category
+      summary: Delete brand
+      operationId: Deletebrand
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /coupon:
+    post:
+      tags:
+      - Coupon
+      summary: Create Coupon
+      operationId: CreateCoupon
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateCouponRequest'
+              - example:
+                  name: INSTA
+                  expiry: Sat, 17 Jun 2023 09:17:49 GMT
+                  discount: 50
+            example:
+              name: INSTA
+              expiry: Sat, 17 Jun 2023 09:17:49 GMT
+              discount: 50
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Coupon
+      summary: Get All Coupon
+      operationId: GetAllCoupon
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /coupon/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The string ID
+    put:
+      tags:
+      - Coupon
+      summary: Update Coupon
+      operationId: UpdateCoupon
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateCouponRequest'
+              - example:
+                  expiry: Mon, 12 Jun 2023 14:19:18 GMT
+            example:
+              expiry: Mon, 12 Jun 2023 14:19:18 GMT
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Coupon
+      summary: Delete Coupon
+      operationId: DeleteCoupon
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+components:
+  schemas:
+    LoginRequest:
+      title: LoginRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: loveseun@gmail.com
+        password: loveiman
+    Admin-login-Request:
+      title: Admin-login-Request
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: loveseun@gmail.com
+        password: loveiman
+    UpdateuserRequest:
+      title: UpdateuserRequest
+      required:
+      - firstname
+      - lastname
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+      example:
+        firstname: Matthew
+        lastname: Ikotun
+    changepasswordrequest:
+      title: changepasswordrequest
+      required:
+      - password
+      type: object
+      properties:
+        password:
+          type: string
+      example:
+        password: lovIma
+    RegisterRequest:
+      title: RegisterRequest
+      required:
+      - firstname
+      - lastname
+      - email
+      - password
+      - mobile
+      - role
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        mobile:
+          type: string
+        role:
+          type: string
+      example:
+        firstname: Love
+        lastname: Peace
+        email: LovePeace@gmail.com
+        password: loveiman
+        mobile: '07088941743'
+        role: admin
+    ForgetpasswordRequest:
+      title: ForgetpasswordRequest
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: joisrel@gmail.com
+    ResetPasswordRequest:
+      title: ResetPasswordRequest
+      required:
+      - password
+      type: object
+      properties:
+        password:
+          type: string
+      example:
+        password: loveiman
+    SaveAddressRequest:
+      title: SaveAddressRequest
+      required:
+      - address
+      type: object
+      properties:
+        address:
+          type: string
+      example:
+        address: Odo Esira Ilesa, Osun state
+    AddcartRequest:
+      title: AddcartRequest
+      required:
+      - cart
+      type: object
+      properties:
+        cart:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cart'
+          description: ''
+      example:
+        cart:
+        - _id: 6474c21b550076816cc3f27f
+          count: 3
+          color: black
+        - _id: 6474c17d89c59ffc3035e3b1
+          count: 2
+          color: brown
+    Cart:
+      title: Cart
+      required:
+      - _id
+      - count
+      - color
+      type: object
+      properties:
+        _id:
+          type: string
+        count:
+          type: integer
+          format: int32
+        color:
+          type: string
+      example:
+        _id: 6474c21b550076816cc3f27f
+        count: 3
+        color: black
+    ApplyCouponRequest:
+      title: ApplyCouponRequest
+      required:
+      - coupon
+      type: object
+      properties:
+        coupon:
+          type: string
+      example:
+        coupon: INSTA
+    CreateorderRequest:
+      title: CreateorderRequest
+      required:
+      - COD
+      - couponApplied
+      type: object
+      properties:
+        COD:
+          type: boolean
+        couponApplied:
+          type: boolean
+      example:
+        COD: true
+        couponApplied: true
+    UpdateOrderStatusRequest:
+      title: UpdateOrderStatusRequest
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+      example:
+        status: Processing
+    RegisterProductRequest:
+      title: RegisterProductRequest
+      required:
+      - title
+      - description
+      - brand
+      - category
+      - price
+      - quantity
+      - colors
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        brand:
+          type: string
+        category:
+          type: string
+        price:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+        colors:
+          type: string
+      example:
+        title: MTN Broadband
+        description: Nah mtn do am
+        brand: Mtn
+        category: Mifi
+        price: 500
+        quantity: 100
+        colors: yellow
+    UpdateProductRequest:
+      title: UpdateProductRequest
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+      example:
+        title: Lenovo Om 2
+    DeleteProductRequest:
+      title: DeleteProductRequest
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+      example:
+        title: Rolex GMT-Master II
+    AddtowishlistRequest:
+      title: AddtowishlistRequest
+      required:
+      - productId
+      type: object
+      properties:
+        productId:
+          type: string
+      example:
+        productId: 6474c17d89c59ffc3035e3b1
+    RatingsRequest:
+      title: RatingsRequest
+      required:
+      - star
+      - comment
+      - productId
+      type: object
+      properties:
+        star:
+          type: integer
+          format: int32
+        comment:
+          type: string
+        productId:
+          type: string
+      example:
+        star: 2
+        comment: Rubbish product
+        productId: 6474c17d89c59ffc3035e3b1
+    CreateBlogRequest:
+      title: CreateBlogRequest
+      required:
+      - title
+      - category
+      - description
+      type: object
+      properties:
+        title:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+      example:
+        title: My AI 1
+        category: AI
+        description: My AI description 1
+    UpdateBlogRequest:
+      title: UpdateBlogRequest
+      required:
+      - title
+      - category
+      - description
+      type: object
+      properties:
+        title:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+      example:
+        title: My Blog 4
+        category: Travel
+        description: My updated blog description 4
+    LikeblogRequest:
+      title: LikeblogRequest
+      required:
+      - blogId
+      type: object
+      properties:
+        blogId:
+          type: string
+      example:
+        blogId: 6478632dce9df053906d10bd
+    dislikeblogrequest:
+      title: dislikeblogrequest
+      required:
+      - blogId
+      type: object
+      properties:
+        blogId:
+          type: string
+      example:
+        blogId: 6478632dce9df053906d10bd
+    CreatecategoryRequest:
+      title: CreatecategoryRequest
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+      example:
+        title: Car
+    UpdatecategoryRequest:
+      title: UpdatecategoryRequest
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+      example:
+        title: Tv
+    CreatebrandRequest:
+      title: CreatebrandRequest
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+      example:
+        title: Lenovo
+    UpdatebrandRequest:
+      title: UpdatebrandRequest
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+      example:
+        title: Apple
+    CreateCouponRequest:
+      title: CreateCouponRequest
+      required:
+      - name
+      - expiry
+      - discount
+      type: object
+      properties:
+        name:
+          type: string
+        expiry:
+          type: string
+        discount:
+          type: integer
+          format: int32
+      example:
+        name: INSTA
+        expiry: Sat, 17 Jun 2023 09:17:49 GMT
+        discount: 50
+    UpdateCouponRequest:
+      title: UpdateCouponRequest
+      required:
+      - expiry
+      type: object
+      properties:
+        expiry:
+          type: string
+      example:
+        expiry: Mon, 12 Jun 2023 14:19:18 GMT
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+- name: auth
+- name: Product
+- name: Blog
+- name: Productcategory
+- name: Blog Category
+- name: Brand Category
+- name: Coupon
